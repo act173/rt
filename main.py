@@ -1,15 +1,22 @@
-from flet import *
-from views.index import IndexPage
-from flet_route import path, Routing
-from views.details import DetailsPage
+import flet as ft
 
-def main(page: Page):
+from views.FletRouter import Router
+from user_controls.app_bar import NavBar
 
-    routes = [
-        path("/", view = IndexPage().view, clear = True),
-        path("/details", view=DetailsPage().view, clear=True)
-    ]
-    Routing(page= page, app_routes = routes)
-    page.go(page.route)
+def main(page: ft.Page):
 
-app(main, view = WEB_BROWSER)
+    page.theme_mode = "dark"
+
+    page.appbar = NavBar(page)
+    myRouter = Router(page)
+
+    page.on_route_change = myRouter.route_change
+
+    page.add(
+        myRouter.body
+    )
+
+    page.go('/')
+
+
+ft.app(target=main, assets_dir="assets")
